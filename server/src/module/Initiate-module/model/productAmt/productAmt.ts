@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../../db-manage/sequelize";
+import sequelize from "../../../initiate/sequelize/sequelize";
 
 const productAmtModel = sequelize.define(
     'productAmt',

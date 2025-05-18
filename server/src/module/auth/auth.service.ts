@@ -1,23 +1,46 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { DbProvider } from 'src/Database/db';
+import { JwtService } from '@nestjs/jwt';
+
 @Injectable()
 export class AuthService {
 
-  constructor(private readonly db: DbProvider) { }
+  constructor(
+    private readonly db: DbProvider,
+    private jwtService: JwtService
+  ) { }
+
+
+  generateToken(payload: any): string {
+    console.log(payload);
+
+    return this.jwtService.sign(payload);
+  }
+
+  verifyToken(token: string): any {
+    return this.jwtService.verify(token);
+  }
 
   async login(payLoad: any) {
+
     let query = await this.db
       .getDb()
       .table("Users")
       .select(['userName', 'password', 'firstName', 'lastName', 'roleId', 'isBlock', 'createdAt', 'updatedAt'])
       .whereLike("userName", `%${payLoad.userName}%`)
       .first();
+        console.log(query);
 
     const auth = await this.comparePasswords(payLoad.password, query.password)
+    
     if (auth) {
       delete query.password
-      return query
+      const userData = this.generateToken({ ...query })
+      return { auth: true, userData }
+    }
+    else {
+      return { auth: false }
     }
   }
 
@@ -34,27 +57,10 @@ export class AuthService {
         payLoad.password = hash
         delete payLoad.confirmPass
         return payLoad
-        //    async function comparePasswords(plainPassword: string, hashedPassword: string): Promise<boolean> {
-        //     return bcrypt.compare(plainPassword, hashedPassword); // Returns true/false
-        //   }
       }
     } catch (error) {
 
     }
 
-  }
-
-  async createAuth(payLoad: any) {
-    try {
-      const query = await this.db
-        .getDb()
-        .table("Users")
-        .insert(payLoad)
-        .returning('id')
-      return await query
-    } catch (error) {
-      console.log(error);
-
-    }
   }
 }

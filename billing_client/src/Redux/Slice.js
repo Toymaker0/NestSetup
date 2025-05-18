@@ -9,10 +9,10 @@ const initialState={
     name:'AutherSlies',
     initialState,
     reducers:{
-      setUserId:(state,action)=>{
+      setUserData:(state,action)=>{
          // console.log(action.payload);
-          const userId=action.payload
-          state.Id=userId
+          const userData=action.payload
+          state.userData=userData
         },
         removeUserId:(state,action)=>{
 
@@ -20,5 +20,5 @@ const initialState={
     }
   })
 
-  export const {setUserId,removeUserId}=slice.actions
+  export const {setUserData,removeUserId}=slice.actions
   export default slice.reducer

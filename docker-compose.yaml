@@ -3,7 +3,7 @@ version: "3.9"
 services:
   mariadb:
     image: mariadb:10.2.38
-    container_name: my_mariadb
+    container_name: server
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
@@ -11,7 +11,7 @@ services:
       MYSQL_USER: root
       MYSQL_PASSWORD: mypassword
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mariadb_data:/var/lib/mysql
 

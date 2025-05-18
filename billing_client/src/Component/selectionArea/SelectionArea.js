@@ -31,7 +31,7 @@ const SelectionArea = () => {
   }
   const handleLogout = () => {
     sessionStorage.clear('userId')  // session storage
-    dispatch(setUserId(0)) //Redux storage
+    dispatch(setUserDetails('')) //Redux storage
     navigate('/')
   }
 

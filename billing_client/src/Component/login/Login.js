@@ -4,10 +4,12 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setUserId } from '../../Redux/Slice';
+import { setUserData } from '../../Redux/Slice';
 
 
 const Login = () => {
+  const  initiate=async()=>{ await axios.get("/initiate/setDb")}
+ 
   const navigate = useNavigate()
   const [loginUser, setLoginUser] = useState({})
   const dispatch = useDispatch()
@@ -32,27 +34,21 @@ const Login = () => {
 
     if (login.data) {
 
-        if (login.data.result[0].isblock == 0) {
-          const userId = login.data.result[0].id
-          sessionStorage.setItem('userId', JSON.stringify(userId))  // session storage
-
-          dispatch(setUserId(userId)) //Redux storage
-          logIn()
-        }
-        else {
-          userisblocked()
-        }
-
-      }
-      else if (login.data.message == 'incorrect passsword') {
-        console.log(2);
-        incorrect()
+      if (login.data.auth) {
+        const userData = login.data.userData
+        sessionStorage.setItem('userData', JSON.stringify(userData))
+        dispatch(setUserData(userData)) //Redux storage
+        logIn()
       }
       else {
-        noUser()
+        incorrect()
       }
     }
-  
+  }
+
+  useEffect(()=>{
+     initiate()
+  },[])
 
   return (
     <div className='login'>

@@ -89,13 +89,14 @@ const Billing = () => {
     setTotal(total);
   };
   const fetchUnits = async () => {
-    const local = await axios.get("http://localhost:6060/FetchUnits");
+    const local = await axios.get("units/get");
+    console.log(local);
     if (local.data.message == "success") {
       setUnits(local.data.result);
     }
   };
   const fetchProds = async () => {
-    const local = await axios.get("http://localhost:6060/FetchProd");
+    const local = await axios.get("product/get");
     if (local.data.message == "success") {
       setProduct(local.data.result);
     }

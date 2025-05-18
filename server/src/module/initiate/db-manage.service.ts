@@ -1,20 +1,17 @@
 import { Injectable, Scope } from '@nestjs/common';
 import * as Knex from 'knex';
-import { SchemaInit } from '../seedData/initiate';
-import sequelize from './sequelize';
+import sequelize from './sequelize/sequelize';
+import { InitiateService } from 'src/module/initiate/initiate.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export class DbManageService {
     private knexInstance: any;
-    constructor(
-       
-        public schemaInit=new SchemaInit()
-    ) {
+    constructor( public schemaInit : InitiateService ) {
         let dbConfig = {
             client: 'mysql',
             connection: {
                 host: "localhost",
-                port: 3306,
+                port: 3307,
                 user: "myuser",
                 password: "mypassword",
                 database: "mydatabase",
@@ -43,5 +40,5 @@ export class DbManageService {
         };
     };
 
-    
+
 }

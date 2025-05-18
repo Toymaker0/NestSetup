@@ -1,6 +1,6 @@
 import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthInterceptor } from './Interceptor/auth.interceptor';
+import { AuthInterceptor } from '../user/Interceptor/auth.interceptor';
 
 @Controller('auth')
 export class AuthController {
@@ -12,12 +12,6 @@ export class AuthController {
     console.log(postData);
     
    return await this.authService.login(postData)
-  }
-
-  @Post('create')
-  @UseInterceptors(AuthInterceptor)
-  async createAuth(@Body() postData:object){    
-    await this.authService.createAuth(postData)
   }
 
 }
